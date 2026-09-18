@@ -7,8 +7,9 @@ import Observation
 /// Pinned machines sort first. Within the pinned and unpinned groups, machines
 /// keep the order they were first seen in, so refreshes, catalog discovery, and
 /// asynchronous loading never shuffle the fleet; a newly created machine appends
-/// after the existing fleet. Pinning moves a machine to the front of that
-/// remembered order, and unpinning leaves it where it is.
+/// after the existing fleet. A newly pinned machine joins the end of the pinned
+/// group (earlier pins stay above it), and unpinning leaves a machine at the top
+/// of the unpinned group so nothing else moves.
 ///
 /// The store is `@Observable`, so a view that reads ``pinnedMachineIDs`` or
 /// ``isPinned(_:)`` re-renders after ``setPinned(_:machineID:)``. Tests pass a
@@ -118,7 +119,8 @@ public final class CloudMachinePinStore {
     }
 
     /// Pins or unpins one machine without changing any other machine's relative
-    /// order. A newly pinned machine moves to the front of the remembered order.
+    /// order: a new pin joins the end of the pinned group, and an unpinned
+    /// machine leads the unpinned group.
     ///
     /// - Parameters:
     ///   - pinned: The new pin state.

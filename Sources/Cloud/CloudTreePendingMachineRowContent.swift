@@ -29,19 +29,20 @@ struct CloudTreePendingMachineRowContent: View {
             .accessibilityElement(children: .combine)
             .accessibilityLabel(operation.summaryLine)
         case .twoLine:
-            HStack(alignment: .top, spacing: layout.iconGap) {
-                leadingGlyph
-                    .frame(height: layout.scaled(style.machineNameLineHeight))
-                VStack(alignment: .leading, spacing: layout.scaled(CloudTreeRowGrid.machineLineSpacing)) {
-                    name
+            CloudTreeMachineBand(style: style) {
+                HStack(alignment: .top, spacing: layout.iconGap) {
+                    leadingGlyph
                         .frame(height: layout.scaled(style.machineNameLineHeight))
-                    status
-                        .frame(height: layout.scaled(style.machineSubtitleLineHeight))
+                    VStack(alignment: .leading, spacing: layout.scaled(CloudTreeRowGrid.machineLineSpacing)) {
+                        name
+                            .frame(height: layout.scaled(style.machineNameLineHeight))
+                        status
+                            .frame(height: layout.scaled(style.machineSubtitleLineHeight))
+                    }
+                    Spacer(minLength: layout.trailingGap)
                 }
-                Spacer(minLength: layout.trailingGap)
+                .padding(.vertical, layout.scaled(style.machineVerticalPadding))
             }
-            .padding(.vertical, layout.scaled(style.machineVerticalPadding))
-            .padding(.trailing, CloudTreeRowGrid.trailingPadding)
             .accessibilityElement(children: .combine)
             .accessibilityLabel(operation.summaryLine)
         }

@@ -2066,15 +2066,15 @@
     "cloudWorkspace.creation.failed.windowClosed": {
       "extractionState": "manual",
       "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "The window that started the request has closed."}},
-        "de": {"stringUnit": {"state": "translated", "value": "Das Fenster, das die Anfrage gestartet hat, wurde geschlossen."}},
-        "fr": {"stringUnit": {"state": "translated", "value": "La fenêtre qui a lancé la demande a été fermée."}},
-        "ar": {"stringUnit": {"state": "translated", "value": "تم إغلاق النافذة التي بدأت الطلب."}},
-        "es": {"stringUnit": {"state": "translated", "value": "La ventana que inició la solicitud se ha cerrado."}},
-        "zh-Hant": {"stringUnit": {"state": "translated", "value": "發起此請求的視窗已關閉。"}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "发起此请求的窗口已关闭。"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "요청을 시작한 창이 닫혔습니다."}},
-        "ja": {"stringUnit": {"state": "translated", "value": "リクエストを開始したウインドウは閉じられました。"}}
+        "en": {"stringUnit": {"state": "translated", "value": "The window that started the request has closed. Retry opens it in the current window."}},
+        "de": {"stringUnit": {"state": "translated", "value": "Das Fenster, das die Anfrage gestartet hat, wurde geschlossen. „Erneut versuchen“ öffnet den Arbeitsbereich im aktuellen Fenster."}},
+        "fr": {"stringUnit": {"state": "translated", "value": "La fenêtre qui a lancé la demande a été fermée. « Réessayer » l’ouvre dans la fenêtre actuelle."}},
+        "ar": {"stringUnit": {"state": "translated", "value": "تم إغلاق النافذة التي بدأت الطلب. تؤدي إعادة المحاولة إلى فتحه في النافذة الحالية."}},
+        "es": {"stringUnit": {"state": "translated", "value": "La ventana que inició la solicitud se ha cerrado. Reintentar lo abre en la ventana actual."}},
+        "zh-Hant": {"stringUnit": {"state": "translated", "value": "發起此請求的視窗已關閉。「重試」會在目前的視窗中開啟。"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "发起此请求的窗口已关闭。“重试”会在当前窗口中打开。"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "요청을 시작한 창이 닫혔습니다. 다시 시도하면 현재 창에서 엽니다."}},
+        "ja": {"stringUnit": {"state": "translated", "value": "リクエストを開始したウインドウは閉じられました。「再試行」で現在のウインドウに開きます。"}}
       }
     },
     "cloudTree.menu.pin": {

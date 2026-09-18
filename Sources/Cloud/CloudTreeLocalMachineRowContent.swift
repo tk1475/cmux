@@ -23,21 +23,22 @@ struct CloudTreeLocalMachineRowContent: View {
             .accessibilityElement(children: .combine)
             .accessibilityLabel(row.name)
         case .twoLine:
-            HStack(alignment: .top, spacing: layout.iconGap) {
-                icon.frame(height: layout.scaled(style.machineNameLineHeight))
-                VStack(alignment: .leading, spacing: layout.scaled(CloudTreeRowGrid.machineLineSpacing)) {
-                    name.frame(height: layout.scaled(style.machineNameLineHeight))
-                    Text(Self.summary(row))
-                        .cmuxFont(size: style.detailSize + 0.5, design: style.fontDesign)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                        .frame(height: layout.scaled(style.machineSubtitleLineHeight))
+            CloudTreeMachineBand(style: style) {
+                HStack(alignment: .top, spacing: layout.iconGap) {
+                    icon.frame(height: layout.scaled(style.machineNameLineHeight))
+                    VStack(alignment: .leading, spacing: layout.scaled(CloudTreeRowGrid.machineLineSpacing)) {
+                        name.frame(height: layout.scaled(style.machineNameLineHeight))
+                        Text(Self.summary(row))
+                            .cmuxFont(size: style.detailSize + 0.5, design: style.fontDesign)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                            .frame(height: layout.scaled(style.machineSubtitleLineHeight))
+                    }
+                    Spacer(minLength: layout.trailingGap)
                 }
-                Spacer(minLength: layout.trailingGap)
+                .padding(.vertical, layout.scaled(style.machineVerticalPadding))
             }
-            .padding(.vertical, layout.scaled(style.machineVerticalPadding))
-            .padding(.trailing, CloudTreeRowGrid.trailingPadding)
             .accessibilityElement(children: .combine)
             .accessibilityLabel(row.name)
         }

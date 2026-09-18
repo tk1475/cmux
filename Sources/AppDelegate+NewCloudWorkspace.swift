@@ -125,13 +125,17 @@ extension AppDelegate {
 #endif
             destination?.apply(workspaceID: workspaceID)
         } onFailure: { [weak self] error in
+            // Once the originating window is gone, a retry can only succeed in
+            // the current main window; every other failure retries as asked.
+            var retryWindowID = windowID
+            if case CloudWorkspaceCoordinatorError.targetWindowUnavailable = error { retryWindowID = nil }
             self?.presentCloudWorkspaceCreationFailure(
                 machineID: capturedMachineID,
                 error: error,
                 windowID: windowID,
                 retry: { [weak self] in
                     _ = self?.performNewCloudWorkspaceOnMachineAction(
-                        machineID: capturedMachineID, focus: focus, windowID: windowID,
+                        machineID: capturedMachineID, focus: focus, windowID: retryWindowID,
                         destination: destination, debugSource: "\(debugSource).retry"
                     )
                 }
@@ -156,7 +160,7 @@ extension AppDelegate {
         if case CloudWorkspaceCoordinatorError.machineUnavailable = error {
             detail = String(localized: "cloudWorkspace.creation.failed.unavailable", defaultValue: "The selected Cloud machine is unavailable.")
         } else if case CloudWorkspaceCoordinatorError.targetWindowUnavailable = error {
-            detail = String(localized: "cloudWorkspace.creation.failed.windowClosed", defaultValue: "The window that started the request has closed.")
+            detail = String(localized: "cloudWorkspace.creation.failed.windowClosed", defaultValue: "The window that started the request has closed. Retry opens it in the current window.")
         } else {
             detail = String(localized: "cloudWorkspace.creation.failed.generic", defaultValue: "cmux couldn’t reach the machine. Check that it is running and try again.")
         }

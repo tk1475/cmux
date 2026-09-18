@@ -77,6 +77,14 @@ final class NewCloudWorkspaceShortcutTests {
         AppDelegate.shared?.debugResetShortcutRoutingStateForTesting(clearFocusedWindowOverride: false)
     }
 
+    /// The shortcut routing seam (`debugHandleCustomShortcut`) exists only in DEBUG builds.
+    private static let hasShortcutRoutingSeam: Bool = {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
+    }()
     private static let cloudOptInKey = BetaFeaturesCatalogSection().cloudMachines.userDefaultsKey
     private static var cloudRemoteFlag: CmuxFeatureFlagDefinition? {
         CmuxFeatureFlags.allFlags.first { $0.key == "cloud-machines-enabled-release" }
@@ -360,7 +368,7 @@ final class NewCloudWorkspaceShortcutTests {
         #expect(presenter.presentCount == 0)
     }
 
-    @Test
+    @Test(.enabled(if: NewCloudWorkspaceShortcutTests.hasShortcutRoutingSeam, "the shortcut routing seam is DEBUG-only"))
     func testCommandYRoutesThroughSharedAction() async throws {
         setUp()
         defer { tearDown() }
@@ -387,12 +395,10 @@ final class NewCloudWorkspaceShortcutTests {
         #expect(appDelegate.debugHandleCustomShortcut(event: event))
         await appDelegate.cloudWorkspaceOperationController?.waitForPendingOperations()
         #expect(presenter.presentCount == 1, "Without a selected Cloud machine, provision instead of choosing an implicit default")
-#else
-        Issue.record("Shortcut routing seam is DEBUG-only"); return
 #endif
     }
 
-    @Test
+    @Test(.enabled(if: NewCloudWorkspaceShortcutTests.hasShortcutRoutingSeam, "the shortcut routing seam is DEBUG-only"))
     func testCommandYCoalescesOneCreateAndOpenIntentUntilItFinishes() async throws {
         setUp()
         defer { tearDown() }
@@ -430,12 +436,10 @@ final class NewCloudWorkspaceShortcutTests {
         releaseCreate.resume()
         await appDelegate.cloudWorkspaceOperationController?.waitForPendingOperations()
         #expect(presenter.presentCount == 0)
-#else
-        Issue.record("Shortcut routing seam is DEBUG-only"); return
 #endif
     }
 
-    @Test
+    @Test(.enabled(if: NewCloudWorkspaceShortcutTests.hasShortcutRoutingSeam, "the shortcut routing seam is DEBUG-only"))
     func testReboundKeyRoutesAndOldKeyDoesNot() async throws {
         setUp()
         defer { tearDown() }
@@ -471,8 +475,6 @@ final class NewCloudWorkspaceShortcutTests {
         #expect(appDelegate.debugHandleCustomShortcut(event: try keyEvent("K", [.command, .shift], 40)))
         await appDelegate.cloudWorkspaceOperationController?.waitForPendingOperations()
         #expect(presenter.presentCount == 1)
-#else
-        Issue.record("Shortcut routing seam is DEBUG-only"); return
 #endif
     }
 
