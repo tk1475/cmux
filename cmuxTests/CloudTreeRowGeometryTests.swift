@@ -84,8 +84,10 @@ struct CloudTreeRowGeometryTests {
         #expect(abs(pinnedLabel.minX - label.minX) <= 1, "pinning a machine must not move its name")
 
         let pinnedFolder = try scene.measure(row: try scene.row(withTitle: GeometryScene.longWorkspaceName))
-        let folder = try scene.measure(row: try scene.row(withTitle: "alpha"))
+        let folder = try scene.measure(row: try scene.row(withTitle: "beta"))
         #expect(pinnedFolder.hasStatusIndicator && !folder.hasStatusIndicator)
+        let unreadFolder = try scene.measure(row: try scene.row(withTitle: "alpha"))
+        #expect(unreadFolder.hasStatusIndicator && unreadFolder.statusInk != nil, "an unread folder shows its dot in the status column")
         let pinnedFolderIcon = try #require(pinnedFolder.iconInk)
         let folderIcon = try #require(folder.iconInk)
         #expect(abs(pinnedFolderIcon.midX - folderIcon.midX) <= 0.5, "pinning a workspace must not move its icon")

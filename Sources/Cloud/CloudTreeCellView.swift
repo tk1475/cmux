@@ -71,7 +71,11 @@ final class CloudTreeCellView: NSTableCellView {
                     isPinned: node.isPinned,
                     hasUnreadNotification: node.hasUnreadAttention
                 ))
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                // Exactly the host's size, leading-aligned: content a narrow sidebar
+                // cannot fit is truncated or clipped at the trailing edge, never
+                // centered so that the icon column drifts left.
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .leading)
+                .clipped()
         )
         // An in-place row reload reuses this cell; the new content can be wider
         // than the last fitting size, so ask AppKit to re-measure the host.
