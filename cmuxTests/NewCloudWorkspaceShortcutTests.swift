@@ -200,6 +200,10 @@ final class NewCloudWorkspaceShortcutTests {
         defer { try? FileManager.default.removeItem(at: root) }
         #expect(!(store.newWorkspaceContextMenuIsConfigured))
         let appDelegate = AppDelegate()
+        // The plus menu gates its Cloud rows on the same availability every
+        // Cloud entrypoint uses (feature on and signed in), so give this
+        // delegate the signed-in Cloud dependencies.
+        installDependencies(on: appDelegate, presenter: RecordingSheetPresenter())
         let tabManager = TabManager()
         let windowId = appDelegate.registerMainWindowContextForTesting(
             tabManager: tabManager,
@@ -297,6 +301,7 @@ final class NewCloudWorkspaceShortcutTests {
         defer { try? FileManager.default.removeItem(at: root) }
         #expect(store.configurationIssues.isEmpty)
         let appDelegate = AppDelegate()
+        installDependencies(on: appDelegate, presenter: RecordingSheetPresenter())
         let tabManager = TabManager()
         let windowId = appDelegate.registerMainWindowContextForTesting(tabManager: tabManager, cmuxConfigStore: store)
         defer { appDelegate.unregisterMainWindowContextForTesting(windowId: windowId) }
@@ -304,7 +309,8 @@ final class NewCloudWorkspaceShortcutTests {
         let menu = try #require(appDelegate.makeNewWorkspaceContextMenu(context: context, cmuxConfigStore: store))
         let rows = builtInMenuRows(menu)
         #expect(rows.prefix(2).map(\.action) == [.newTerminal, .newCloudWorkspace])
-        #expect(rows[1].item.keyEquivalent == "y")
+        let cloudRow = try #require(rows.first { $0.action == .newCloudWorkspace })
+        #expect(cloudRow.item.keyEquivalent == "y")
     }
 
     // MARK: Shared action path
