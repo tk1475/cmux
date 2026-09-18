@@ -1,4 +1,5 @@
 import AppKit
+import CmuxFoundation
 import SwiftUI
 
 /// Hosts SwiftUI row content inside an `NSOutlineView` cell while leaving every
@@ -66,12 +67,11 @@ final class CloudTreeCellView: NSTableCellView {
         displayHost.rootView = AnyView(
             CloudTreeRowContentView(kind: node.kind, style: style)
                 .modifier(CloudSidebarRowDecoration(
+                    style: style,
                     isPinned: node.isPinned,
-                    showsAttentionSlot: node.showsAttentionSlot,
-                    hasUnreadNotification: node.hasUnreadAttention,
-                    showsPinSlot: node.isMachineRow || node.canOrganize
+                    hasUnreadNotification: node.hasUnreadAttention
                 ))
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         )
         // An in-place row reload reuses this cell; the new content can be wider
         // than the last fitting size, so ask AppKit to re-measure the host.
@@ -83,10 +83,12 @@ final class CloudTreeCellView: NSTableCellView {
             buttons.isHidden = false
             buttons.alphaValue = hovered ? 1 : 0
             buttonsLeadingConstraint?.isActive = true
-            // Keep hover buttons on the name line above the resource summary.
-            // Local and pending rows retain their preset alignment.
-            let pinToNameLine = node.isMachineRow && (style.machineRowLayout == .twoLine || node.structureTag == "machine")
-            buttonsTopConstraint?.constant = style.machineVerticalPadding + (style.machineBand ? 4 : 0)
+            // Two-line machine cards keep hover buttons on the name line; every
+            // single-line row centers them, like the caret and the icon.
+            let pinToNameLine = node.isMachineRow && style.machineRowLayout == .twoLine
+            buttonsTopConstraint?.constant = GlobalFontMagnification.scaledSize(
+                style.machineVerticalPadding + style.machineBandVerticalPadding
+            )
             buttonsTopConstraint?.isActive = pinToNameLine
             buttonsCenterConstraint?.isActive = !pinToNameLine
         } else {

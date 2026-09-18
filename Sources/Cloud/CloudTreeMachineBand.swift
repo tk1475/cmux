@@ -2,7 +2,8 @@ import CmuxFoundation
 import SwiftUI
 
 /// The full-width tinted band `sections`-family machine rows sit in; a plain
-/// pass-through elsewhere.
+/// pass-through elsewhere. The band is decoration only: it extends behind the
+/// content without moving it off the shared row grid.
 struct CloudTreeMachineBand<Content: View>: View {
     let style: CloudTreeStyle
     @ViewBuilder var content: () -> Content
@@ -11,15 +12,16 @@ struct CloudTreeMachineBand<Content: View>: View {
     var body: some View {
         if style.machineBand {
             content()
-                .padding(.leading, 6)
                 .padding(.vertical, GlobalFontMagnification.scaledSize(
                     style.machineBandVerticalPadding, percent: magnification
                 ))
                 .background(
                     RoundedRectangle(cornerRadius: 6, style: .continuous)
                         .fill(Color.primary.opacity(0.06))
+                        .padding(.leading, -6)
+                        .padding(.trailing, -2)
                 )
-                .padding(.trailing, CloudTreeRowGrid.trailingPadding - 2)
+                .padding(.trailing, CloudTreeRowGrid.trailingPadding)
         } else {
             content()
                 .padding(.trailing, CloudTreeRowGrid.trailingPadding)

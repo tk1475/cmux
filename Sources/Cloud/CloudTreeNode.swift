@@ -581,9 +581,7 @@ enum CloudTreeNodeBuilder {
                 isPinned: machine.isPinned
             ))
         }
-        // New creates append below the existing fleet. Their stand-in disappears
-        // once the list or catalog supplies the real machine, without shifting
-        // any existing machine above or below its neighbors.
+        // New creates append below the fleet; a stand-in disappears once its machine has a row.
         for operation in pendingCreates where !operation.isSuperseded(by: machines, catalogMachines: snapshot.machines) {
             nodes.append(CloudTreeNode(id: nodeID(pendingCreate: operation.id), kind: .pendingMachine(operation)))
         }

@@ -1,13 +1,4 @@
 extension CloudTreeNode {
-    var showsAttentionSlot: Bool {
-        switch kind {
-        // Surface, resource, and empty-state rows share a leading attention
-        // column so every nested row uses the same horizontal rhythm.
-        case .workspace, .localWorkspace, .terminal, .display, .browser, .port, .resource, .placeholder: return true
-        default: return false
-        }
-    }
-
     var hasUnreadAttention: Bool {
         switch kind {
         case .terminal(let row): return row.hasUnreadNotification

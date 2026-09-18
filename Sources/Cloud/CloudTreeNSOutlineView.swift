@@ -5,7 +5,7 @@ import CmuxFoundation
 /// keyboard vocabulary (j/k, h/l, arrows, Return opens, `/` quick-search), and
 /// the mode shortcuts that jump between sidebar tabs.
 final class CloudTreeNSOutlineView: NSOutlineView {
-    static let leadingMargin: CGFloat = 8
+    static let leadingMargin: CGFloat = CloudTreeRowGrid.outlineLeadingMargin
     lazy var reorderPresentation = CloudTreeReorderPresentation(outline: self)
 
     override init(frame frameRect: NSRect) {
@@ -316,16 +316,15 @@ final class CloudTreeNSOutlineView: NSOutlineView {
         onDocumentContentChanged?()
     }
 
-    private func disclosureLeading(atRow row: Int) -> CGFloat {
-        GlobalFontMagnification.scaledSize(
-            Self.leadingMargin + CGFloat(max(0, level(forRow: row))) * treeStyle.indentPerLevel
-        )
-    }
+    /// The row grid at the stored magnification: the same numbers the hosted
+    /// SwiftUI rows use, so caret, status, icon, and title columns agree.
+    var rowLayout: CloudTreeRowLayout { CloudTreeRowLayout(style: treeStyle) }
 
     override func frameOfOutlineCell(atRow row: Int) -> NSRect {
         var frame = super.frameOfOutlineCell(atRow: row)
-        frame.origin.x = disclosureLeading(atRow: row)
-        frame.size.width = GlobalFontMagnification.scaledSize(CloudTreeRowGrid.disclosureSlot)
+        let layout = rowLayout
+        frame.origin.x = layout.disclosureLeading(depth: level(forRow: row))
+        frame.size.width = layout.disclosureSlot
         if let node = item(atRow: row) as? CloudTreeNode, node.isMachineRow,
            treeStyle.machineRowLayout == .twoLine {
             // Multi-line machine rows: the chevron centers on the name line (first
@@ -345,9 +344,7 @@ final class CloudTreeNSOutlineView: NSOutlineView {
     override func frameOfCell(atColumn column: Int, row: Int) -> NSRect {
         var frame = super.frameOfCell(atColumn: column, row: row)
         let trailing = frame.maxX
-        frame.origin.x = disclosureLeading(atRow: row) + GlobalFontMagnification.scaledSize(
-            CloudTreeRowGrid.disclosureSlot + CloudTreeRowGrid.disclosureGap
-        )
+        frame.origin.x = rowLayout.contentLeading(depth: level(forRow: row))
         frame.size.width = max(0, trailing - frame.minX)
         return frame
     }

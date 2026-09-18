@@ -85,13 +85,13 @@ struct CloudTreeStyle: Equatable, Identifiable, Sendable {
     var machineResourceHeight: CGFloat { detailSize + 3.5 }
     var machineBandVerticalPadding: CGFloat { machineBand ? 4 : 0 }
 
-    /// Compact rows remain one line; the card style reserves its additional details.
+    /// Single-line machine rows are exactly as tall as every other row (plus the
+    /// band's own padding), so carets, icons, and names share one vertical
+    /// center; the card style reserves its additional details.
     func machineRowHeight(hasStats: Bool, hasUsage: Bool = false) -> CGFloat {
         switch machineRowLayout {
         case .singleLine:
-            let identityHeight = machineNameLineHeight
-                + 2 * (machineVerticalPadding + machineBandVerticalPadding)
-            return max(rowHeight + (machineBand ? 7 : 2), identityHeight)
+            return rowHeight + 2 * machineBandVerticalPadding
         case .twoLine:
             let statsHeight = hasStats && showsMachineStats ? 1 + machineResourceHeight : 0
             let usageHeight = hasUsage ? 1 + machineResourceHeight : 0

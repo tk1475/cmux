@@ -1,44 +1,46 @@
+import CmuxFoundation
 import SwiftUI
 
 /// A machine that does not exist yet (or failed to): the row the Machines
 /// panel shows from the moment the sheet's Create is pressed until the fleet
 /// list returns the real machine. Mirrors ``CloudTreeMachineRowContent``'s
 /// two layouts so the row sits in the same column grid as its neighbours;
-/// the leading slot carries a spinner while running and a warning once
-/// failed.
+/// the icon slot carries a spinner while running and a warning once failed.
 struct CloudTreePendingMachineRowContent: View {
     let operation: MachineCreateOperation
     var style: CloudTreeStyle = CloudTreeStyleStore.current
+    @Environment(\.cmuxGlobalFontMagnificationPercent) private var magnification
+
+    private var layout: CloudTreeRowLayout { CloudTreeRowLayout(style: style, magnification: magnification) }
 
     var body: some View {
         switch style.machineRowLayout {
         case .singleLine:
             CloudTreeMachineBand(style: style) {
-                HStack(alignment: .center, spacing: CloudTreeRowGrid.dotGap) {
+                HStack(alignment: .center, spacing: layout.iconGap) {
                     leadingGlyph
-                        .frame(width: CloudTreeRowGrid.dotSlot, alignment: .center)
-                    HStack(alignment: .firstTextBaseline, spacing: CloudTreeRowGrid.dotGap) {
+                    HStack(alignment: .firstTextBaseline, spacing: layout.detailGap) {
                         name
                         status
                     }
-                    Spacer(minLength: CloudTreeRowGrid.trailingGap)
+                    Spacer(minLength: layout.trailingGap)
                 }
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel(operation.summaryLine)
         case .twoLine:
-            HStack(alignment: .top, spacing: CloudTreeRowGrid.dotGap) {
+            HStack(alignment: .top, spacing: layout.iconGap) {
                 leadingGlyph
-                    .frame(width: CloudTreeRowGrid.dotSlot, height: style.machineNameLineHeight, alignment: .center)
-                VStack(alignment: .leading, spacing: CloudTreeRowGrid.machineLineSpacing) {
+                    .frame(height: layout.scaled(style.machineNameLineHeight))
+                VStack(alignment: .leading, spacing: layout.scaled(CloudTreeRowGrid.machineLineSpacing)) {
                     name
-                        .frame(height: style.machineNameLineHeight)
+                        .frame(height: layout.scaled(style.machineNameLineHeight))
                     status
-                        .frame(height: style.machineSubtitleLineHeight)
+                        .frame(height: layout.scaled(style.machineSubtitleLineHeight))
                 }
-                Spacer(minLength: CloudTreeRowGrid.trailingGap)
+                Spacer(minLength: layout.trailingGap)
             }
-            .padding(.vertical, style.machineVerticalPadding)
+            .padding(.vertical, layout.scaled(style.machineVerticalPadding))
             .padding(.trailing, CloudTreeRowGrid.trailingPadding)
             .accessibilityElement(children: .combine)
             .accessibilityLabel(operation.summaryLine)
@@ -50,10 +52,12 @@ struct CloudTreePendingMachineRowContent: View {
         if operation.isRunning {
             ProgressView()
                 .controlSize(.mini)
+                .frame(width: layout.iconSlot, alignment: .center)
         } else {
             Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 9, weight: .medium))
+                .cmuxFont(size: style.iconSize, weight: .medium)
                 .foregroundStyle(.orange)
+                .frame(width: layout.iconSlot, alignment: .center)
         }
     }
 

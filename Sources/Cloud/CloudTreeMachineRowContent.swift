@@ -2,24 +2,32 @@ import CmuxCloudMachines
 import CmuxFoundation
 import SwiftUI
 
-/// Compact rows keep identity, resources and usage on one baseline; cards stack details.
-/// This view receives only an immutable snapshot; the panel owns stats refreshes.
+/// A machine header on the shared row grid: the cloud glyph in the icon slot and
+/// the name in the title column; the two-line card style adds a subtitle. This view
+/// receives only an immutable snapshot; the panel owns stats refreshes.
 struct CloudTreeMachineRowContent: View {
     let machine: MachineSnapshot
     var style: CloudTreeStyle = CloudTreeStyleStore.current
     var now: Date = .now
     @Environment(\.cmuxGlobalFontMagnificationPercent) private var fontMagnification
 
+    private var layout: CloudTreeRowLayout { CloudTreeRowLayout(style: style, magnification: fontMagnification) }
+
     var body: some View {
         CloudTreeMachineBand(style: style) {
-            HStack(alignment: .top, spacing: CloudTreeRowGrid.dotGap) {
-                Image(systemName: machine.freeAccess == .expired ? "lock.fill" : "cloud")
-                    .font(.system(size: 9, weight: .medium))
-                    .foregroundStyle(.secondary)
-                    .frame(width: CloudTreeRowGrid.dotSlot, height: scaled(style.machineNameLineHeight))
-                VStack(alignment: .leading, spacing: scaled(CloudTreeRowGrid.machineLineSpacing)) {
-                    nameRow
-                    if style.machineRowLayout == .twoLine {
+            switch style.machineRowLayout {
+            case .singleLine:
+                // Identity only: readings and usage live in the Resources section.
+                HStack(alignment: .center, spacing: layout.iconGap) {
+                    icon
+                    name
+                    Spacer(minLength: layout.trailingGap)
+                }
+            case .twoLine:
+                HStack(alignment: .top, spacing: layout.iconGap) {
+                    icon.frame(height: scaled(style.machineNameLineHeight))
+                    VStack(alignment: .leading, spacing: scaled(CloudTreeRowGrid.machineLineSpacing)) {
+                        name.frame(height: scaled(style.machineNameLineHeight))
                         Text(subtitle)
                             .cmuxFont(size: style.detailSize, design: style.fontDesign)
                             .foregroundStyle(.tertiary)
@@ -27,28 +35,32 @@ struct CloudTreeMachineRowContent: View {
                             .truncationMode(.tail)
                             .frame(height: scaled(style.machineSubtitleLineHeight))
                     }
+                    Spacer(minLength: layout.trailingGap)
                 }
+                .padding(.vertical, scaled(style.machineVerticalPadding))
             }
-            .padding(.vertical, scaled(style.machineVerticalPadding))
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
     }
 
-    /// Machine identity retains its own line at every sidebar width.
-    private var nameRow: some View {
-        HStack(alignment: .firstTextBaseline, spacing: CloudTreeRowGrid.dotGap) {
-            HStack(alignment: .firstTextBaseline, spacing: CloudTreeRowGrid.dotGap) {
-                Text(machine.displayName)
-                    .cmuxFont(size: style.machineNameSize, weight: .medium, design: style.fontDesign)
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .layoutPriority(1)
-            }
-            Spacer(minLength: 0)
-        }
-        .frame(height: scaled(style.machineNameLineHeight))
+    /// The machine glyph in the shared icon slot; a lock once the free window closed.
+    private var icon: some View {
+        CloudTreeRowIcon(
+            style: style,
+            systemName: machine.freeAccess == .expired ? "lock.fill" : "cloud",
+            tint: CloudTreeIconPalette.machine,
+            weight: .medium
+        )
+    }
+
+    /// Machine identity keeps its own line at every sidebar width.
+    private var name: some View {
+        Text(machine.displayName)
+            .cmuxFont(size: style.machineNameSize, weight: .medium, design: style.fontDesign)
+            .foregroundStyle(.primary)
+            .lineLimit(1)
+            .truncationMode(.tail)
     }
 
     /// Combines this machine's identity, activity, and resource readings for assistive technology.

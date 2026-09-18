@@ -20,11 +20,14 @@ struct CloudSidebarPinGeometryTests {
         #expect(abs(pinned.maxX - unpinned.maxX) <= 1, "Trailing alignment must not move when pinning")
     }
 
-    @Test("Pin geometry follows the same magnification as row text")
+    @Test("The status column scales with the row text so a magnified pin never overflows it")
     func pinMagnification() throws {
         let small = try contentBounds(width: 140, pinned: true, percent: 75)
         let large = try contentBounds(width: 140, pinned: true, percent: 200)
-        #expect(abs(large.minX - small.minX) <= 1)
+        let smallLayout = CloudTreeRowLayout(style: .compact, magnification: 75)
+        let largeLayout = CloudTreeRowLayout(style: .compact, magnification: 200)
+        #expect(abs(small.minX - smallLayout.iconLeading) <= 1)
+        #expect(abs(large.minX - largeLayout.iconLeading) <= 1)
         #expect(abs(large.maxX - small.maxX) <= 1)
     }
 
@@ -151,7 +154,7 @@ struct CloudSidebarPinGeometryTests {
 
     private func contentBounds(width: Double, pinned: Bool, percent: Int) throws -> CGRect {
         let host = NSHostingView(rootView: Color.blue
-            .modifier(CloudSidebarRowDecoration(isPinned: pinned, showsAttentionSlot: true, hasUnreadNotification: false, showsPinSlot: true))
+            .modifier(CloudSidebarRowDecoration(style: .compact, isPinned: pinned, hasUnreadNotification: false))
             .environment(\.cmuxGlobalFontMagnificationPercent, percent))
         host.frame = NSRect(x: 0, y: 0, width: width, height: 28)
         let window = NSWindow(contentRect: host.frame, styleMask: [], backing: .buffered, defer: false)

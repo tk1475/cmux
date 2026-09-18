@@ -1,26 +1,27 @@
+import CmuxFoundation
 import SwiftUI
 
+/// A one-line explanatory row (connecting, asleep, empty, link error) on the
+/// same grid as its siblings: the state glyph or spinner in the icon slot,
+/// then the text in the title column.
 struct CloudTreePlaceholderContent: View {
     let placeholder: CloudTreePlaceholder
     let style: CloudTreeStyle
+    @Environment(\.cmuxGlobalFontMagnificationPercent) private var magnification
 
     var body: some View {
-        HStack(alignment: .center, spacing: style.iconGap) {
-            Group {
-                switch placeholder.style {
-                case .connecting:
-                    ProgressView().controlSize(.mini)
-                case .error:
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.system(size: max(style.iconSize, 9), weight: .regular))
-                        .foregroundStyle(.secondary)
-                case .dimmed:
-                    Image(systemName: "moon.zzz")
-                        .font(.system(size: max(style.iconSize, 9), weight: .regular))
-                        .foregroundStyle(.tertiary)
-                }
+        let layout = CloudTreeRowLayout(style: style, magnification: magnification)
+        HStack(alignment: .center, spacing: layout.iconGap) {
+            switch placeholder.style {
+            case .connecting:
+                ProgressView()
+                    .controlSize(.mini)
+                    .frame(width: layout.iconSlot, alignment: .center)
+            case .error:
+                CloudTreeRowIcon(style: style, systemName: "exclamationmark.triangle", tint: .secondary)
+            case .dimmed:
+                CloudTreeRowIcon(style: style, systemName: "moon.zzz", tint: .secondary, dimmed: true)
             }
-            .frame(width: max(style.iconSlot, 12))
             Text(placeholder.text)
                 .cmuxFont(size: style.detailSize + 1, design: style.fontDesign)
                 .foregroundStyle(.secondary)

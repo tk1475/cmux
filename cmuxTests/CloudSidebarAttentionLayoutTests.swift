@@ -45,8 +45,9 @@ struct CloudSidebarAttentionLayoutTests {
         }
         let right = try #require(changedX.max(), "The unread indicator must actually render")
         let scale = Double(unread.pixelsWide) / width
-        #expect(Double(right) / scale < 8,
-                "The dot must be before the icon; pin, title and trailing controls cannot shift")
+        let statusColumn = CloudTreeRowLayout(style: fixture.coordinator.style).iconLeading
+        #expect(Double(right) / scale < statusColumn,
+                "The dot must stay inside the status column before the icon; pin, title and trailing controls cannot shift")
         let cleared = try render(cell, node: readNode, fixture: fixture)
         #expect(cleared.tiffRepresentation == read.tiffRepresentation)
         #if compiler(>=6.2)
