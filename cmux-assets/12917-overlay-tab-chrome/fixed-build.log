@@ -1,0 +1,11 @@
+reload-cloud: cloud overlay will use local Ghostty commit 35ae29b7c2bcee7c721d515d0096a9bc3f3242bb
+reload-cloud: provisioning Docker backend for tag 12917-overlay-tab-chrome on port 3990 (transport=direct)
+tag=12917-overlay-tab-chrome transport=direct url=https://cmux-dev-backend-1.tail137216.ts.net:4495/ remote_port=4495 state=provisioned healthy=true
+PHASE=push
+reload-cloud: capturing working tree onto an ephemeral branch (no PR, no CI)
+reload-cloud: swept stale ephemeral branch reload-blacksmith/issue-12675-cloud-gcp-1789694960 (10434s old)
+reload-cloud: swept stale ephemeral branch reload-blacksmith/issue-12675-cloud-gcp-1789694977 (10417s old)
+reload-cloud: swept stale ephemeral branch reload-blacksmith/issue-12675-cloud-gcp-1789695702 (9692s old)
+reload-cloud: swept stale ephemeral branch reload-blacksmith/issue-12675-cloud-gcp-1789697083 (8311s old)
+reload-cloud: swept stale ephemeral branch reload-blacksmith/main-cloud-machines-gcp-1789695148 (10246s old)
+reload-cloud: swept stale ephemeral branch reload-blacksmith/main-cloud-machines-gcp-1789695643 (9751s old)

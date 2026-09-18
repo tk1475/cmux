@@ -1,0 +1,304 @@
+{
+  "active" : {
+    "is_browser_surface" : false,
+    "pane_ref" : "pane:1",
+    "surface_ref" : "surface:1",
+    "surface_type" : "terminal",
+    "tab_ref" : "tab:1",
+    "window_ref" : "window:1",
+    "workspace_id" : "9CC15F2E-3517-4E43-9A60-F1A19B5C753B",
+    "workspace_ref" : "workspace:1"
+  },
+  "caller" : null,
+  "windows" : [
+    {
+      "active" : true,
+      "current" : true,
+      "index" : 0,
+      "key" : false,
+      "ref" : "window:1",
+      "selected_workspace_id" : "9CC15F2E-3517-4E43-9A60-F1A19B5C753B",
+      "selected_workspace_ref" : "workspace:1",
+      "visible" : true,
+      "workspace_count" : 6,
+      "workspaces" : [
+        {
+          "active" : true,
+          "description" : null,
+          "id" : "9CC15F2E-3517-4E43-9A60-F1A19B5C753B",
+          "index" : 0,
+          "layout" : {
+            "pane" : {
+              "ref" : "pane:1"
+            }
+          },
+          "panes" : [
+            {
+              "active" : true,
+              "focused" : true,
+              "index" : 0,
+              "ref" : "pane:1",
+              "selected_surface_ref" : "surface:1",
+              "surface_count" : 1,
+              "surface_refs" : [
+                "surface:1"
+              ],
+              "surfaces" : [
+                {
+                  "active" : true,
+                  "focused" : true,
+                  "here" : false,
+                  "index" : 0,
+                  "index_in_pane" : 0,
+                  "pane_ref" : "pane:1",
+                  "ref" : "surface:1",
+                  "render_health" : "rendering",
+                  "selected" : true,
+                  "selected_in_pane" : true,
+                  "title" : "~",
+                  "tty" : "ttys002",
+                  "type" : "terminal",
+                  "url" : null
+                }
+              ]
+            }
+          ],
+          "pinned" : false,
+          "ref" : "workspace:1",
+          "selected" : true,
+          "title" : "~"
+        },
+        {
+          "active" : false,
+          "description" : null,
+          "id" : "4A1C6364-DEA6-45F5-818B-A5BF128E5EAA",
+          "index" : 1,
+          "layout" : {
+            "pane" : {
+              "ref" : "pane:4"
+            }
+          },
+          "panes" : [
+            {
+              "active" : false,
+              "focused" : true,
+              "index" : 0,
+              "ref" : "pane:4",
+              "selected_surface_ref" : "surface:4",
+              "surface_count" : 1,
+              "surface_refs" : [
+                "surface:4"
+              ],
+              "surfaces" : [
+                {
+                  "active" : false,
+                  "focused" : true,
+                  "here" : false,
+                  "index" : 0,
+                  "index_in_pane" : 0,
+                  "pane_ref" : "pane:4",
+                  "ref" : "surface:4",
+                  "render_health" : "not_started",
+                  "selected" : true,
+                  "selected_in_pane" : true,
+                  "title" : "Terminal",
+                  "tty" : null,
+                  "type" : "terminal",
+                  "url" : null
+                }
+              ]
+            }
+          ],
+          "pinned" : false,
+          "ref" : "workspace:4",
+          "selected" : false,
+          "title" : "Workspace 6"
+        },
+        {
+          "active" : false,
+          "description" : null,
+          "id" : "E37BD149-8104-4642-A92E-C0A52B883195",
+          "index" : 2,
+          "layout" : {
+            "pane" : {
+              "ref" : "pane:5"
+            }
+          },
+          "panes" : [
+            {
+              "active" : false,
+              "focused" : true,
+              "index" : 0,
+              "ref" : "pane:5",
+              "selected_surface_ref" : "surface:5",
+              "surface_count" : 1,
+              "surface_refs" : [
+                "surface:5"
+              ],
+              "surfaces" : [
+                {
+                  "active" : false,
+                  "focused" : true,
+                  "here" : false,
+                  "index" : 0,
+                  "index_in_pane" : 0,
+                  "pane_ref" : "pane:5",
+                  "ref" : "surface:5",
+                  "render_health" : "not_started",
+                  "selected" : true,
+                  "selected_in_pane" : true,
+                  "title" : "Terminal",
+                  "tty" : null,
+                  "type" : "terminal",
+                  "url" : null
+                }
+              ]
+            }
+          ],
+          "pinned" : false,
+          "ref" : "workspace:5",
+          "selected" : false,
+          "title" : "Workspace 5"
+        },
+        {
+          "active" : false,
+          "description" : null,
+          "id" : "6126DA59-A89D-4AD8-BCE4-743EAC6A8B9E",
+          "index" : 3,
+          "layout" : {
+            "pane" : {
+              "ref" : "pane:6"
+            }
+          },
+          "panes" : [
+            {
+              "active" : false,
+              "focused" : true,
+              "index" : 0,
+              "ref" : "pane:6",
+              "selected_surface_ref" : "surface:6",
+              "surface_count" : 1,
+              "surface_refs" : [
+                "surface:6"
+              ],
+              "surfaces" : [
+                {
+                  "active" : false,
+                  "focused" : true,
+                  "here" : false,
+                  "index" : 0,
+                  "index_in_pane" : 0,
+                  "pane_ref" : "pane:6",
+                  "ref" : "surface:6",
+                  "render_health" : "not_started",
+                  "selected" : true,
+                  "selected_in_pane" : true,
+                  "title" : "Terminal",
+                  "tty" : null,
+                  "type" : "terminal",
+                  "url" : null
+                }
+              ]
+            }
+          ],
+          "pinned" : false,
+          "ref" : "workspace:6",
+          "selected" : false,
+          "title" : "Workspace 4"
+        },
+        {
+          "active" : false,
+          "description" : null,
+          "id" : "5A6506EA-DE10-4264-9CC1-E1499CF083BE",
+          "index" : 4,
+          "layout" : {
+            "pane" : {
+              "ref" : "pane:7"
+            }
+          },
+          "panes" : [
+            {
+              "active" : false,
+              "focused" : true,
+              "index" : 0,
+              "ref" : "pane:7",
+              "selected_surface_ref" : "surface:7",
+              "surface_count" : 1,
+              "surface_refs" : [
+                "surface:7"
+              ],
+              "surfaces" : [
+                {
+                  "active" : false,
+                  "focused" : true,
+                  "here" : false,
+                  "index" : 0,
+                  "index_in_pane" : 0,
+                  "pane_ref" : "pane:7",
+                  "ref" : "surface:7",
+                  "render_health" : "not_started",
+                  "selected" : true,
+                  "selected_in_pane" : true,
+                  "title" : "Terminal",
+                  "tty" : null,
+                  "type" : "terminal",
+                  "url" : null
+                }
+              ]
+            }
+          ],
+          "pinned" : false,
+          "ref" : "workspace:7",
+          "selected" : false,
+          "title" : "Workspace 3"
+        },
+        {
+          "active" : false,
+          "description" : null,
+          "id" : "E181DCC1-8DC0-4325-AFCD-83DB76EA5222",
+          "index" : 5,
+          "layout" : {
+            "pane" : {
+              "ref" : "pane:8"
+            }
+          },
+          "panes" : [
+            {
+              "active" : false,
+              "focused" : true,
+              "index" : 0,
+              "ref" : "pane:8",
+              "selected_surface_ref" : "surface:8",
+              "surface_count" : 1,
+              "surface_refs" : [
+                "surface:8"
+              ],
+              "surfaces" : [
+                {
+                  "active" : false,
+                  "focused" : true,
+                  "here" : false,
+                  "index" : 0,
+                  "index_in_pane" : 0,
+                  "pane_ref" : "pane:8",
+                  "ref" : "surface:8",
+                  "render_health" : "not_started",
+                  "selected" : true,
+                  "selected_in_pane" : true,
+                  "title" : "Terminal",
+                  "tty" : null,
+                  "type" : "terminal",
+                  "url" : null
+                }
+              ]
+            }
+          ],
+          "pinned" : false,
+          "ref" : "workspace:8",
+          "selected" : false,
+          "title" : "Workspace 2"
+        }
+      ]
+    }
+  ]
+}
