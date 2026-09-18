@@ -19,9 +19,12 @@ public struct CloudWorkspaceMachineContext: Equatable, Sendable {
             switch selection {
             case .cloud(let id) where !id.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty:
                 target = .cloud(id.trimmingCharacters(in: .whitespacesAndNewlines))
-            case .pending:
+            case .pending, .cloud:
+                // A pending row, or a Cloud row whose identity is blank, can
+                // never resolve to a machine; fail closed rather than fall back
+                // to this Mac or to any other machine.
                 target = .unavailable
-            case .local, .none, .cloud:
+            case .local, .none:
                 target = .local
             }
         } else {

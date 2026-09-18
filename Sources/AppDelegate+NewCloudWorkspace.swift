@@ -5,6 +5,9 @@ import Foundation
 // MARK: - Explicit Cloud workspace creation
 
 extension AppDelegate {
+    /// Cmd+N and the plus menu: creates on the explicitly selected Cloud machine
+    /// when the Machines tree owns the selection, refuses a selection that
+    /// cannot accept creation, and otherwise creates a local workspace.
     @discardableResult
     func performNewWorkspaceSelectionAwareAction(
         tabManager: TabManager? = nil,
@@ -55,8 +58,9 @@ extension AppDelegate {
         )
     }
 
-    /// Creates on the explicitly selected Cloud machine, or presents machine
-    /// provisioning when no Cloud machine is selected.
+    /// Creates on the explicitly selected Cloud machine, refuses a selection
+    /// that cannot accept creation, or presents machine provisioning when no
+    /// Cloud machine is selected. Never routes through an implicit default.
     @discardableResult
     func performNewCloudWorkspaceFromSelectionAction(
         preferredWindow: NSWindow? = nil,
@@ -65,14 +69,24 @@ extension AppDelegate {
     ) -> Bool {
         let context = preferredWindow.flatMap { contextForMainWindow($0) }
             ?? preferredMainWindowContextForWorkspaceCreation(event: nil, debugSource: debugSource)
-        if let context, case .cloud(let machineID) = newWorkspaceMachineContext(for: context).target {
-            return performNewCloudWorkspaceOnMachineAction(
-                machineID: machineID,
-                focus: context.tabManager.selectedTabId != nil,
-                windowID: context.windowId,
-                destination: destination,
-                debugSource: debugSource
-            )
+        if let context {
+            switch newWorkspaceMachineContext(for: context).target {
+            case .cloud(let machineID):
+                return performNewCloudWorkspaceOnMachineAction(
+                    machineID: machineID,
+                    focus: context.tabManager.selectedTabId != nil,
+                    windowID: context.windowId,
+                    destination: destination,
+                    debugSource: debugSource
+                )
+            case .unavailable:
+                // A pending row or a blank Cloud identity is selected: fail closed
+                // instead of provisioning a machine the person did not ask for.
+                NSSound.beep()
+                return false
+            case .local:
+                break
+            }
         }
         return performNewCloudWorkspaceAction(
             preferredWindow: preferredWindow,
@@ -125,6 +139,10 @@ extension AppDelegate {
         }
     }
 
+    /// Explains a failed create with Retry/Cancel. Only product errors map to
+    /// specific copy; anything else gets generic text, because provider and
+    /// transport errors can carry URLs, payloads, and environment details that
+    /// belong in the private log, not in an alert.
     private func presentCloudWorkspaceCreationFailure(
         machineID: String,
         error: Error,
@@ -134,9 +152,14 @@ extension AppDelegate {
         let alert = NSAlert()
         alert.alertStyle = .warning
         alert.messageText = String(localized: "cloudWorkspace.creation.failed.title", defaultValue: "Couldn’t create Cloud workspace")
-        let detail = if case CloudWorkspaceCoordinatorError.machineUnavailable = error {
-            String(localized: "cloudWorkspace.creation.failed.unavailable", defaultValue: "The selected Cloud machine is unavailable.")
-        } else { error.localizedDescription }
+        let detail: String
+        if case CloudWorkspaceCoordinatorError.machineUnavailable = error {
+            detail = String(localized: "cloudWorkspace.creation.failed.unavailable", defaultValue: "The selected Cloud machine is unavailable.")
+        } else if case CloudWorkspaceCoordinatorError.targetWindowUnavailable = error {
+            detail = String(localized: "cloudWorkspace.creation.failed.windowClosed", defaultValue: "The window that started the request has closed.")
+        } else {
+            detail = String(localized: "cloudWorkspace.creation.failed.generic", defaultValue: "cmux couldn’t reach the machine. Check that it is running and try again.")
+        }
         alert.informativeText = String(
             format: String(localized: "cloudWorkspace.creation.failed.detail", defaultValue: "The workspace could not be created on %@. %@"),
             machineID, detail

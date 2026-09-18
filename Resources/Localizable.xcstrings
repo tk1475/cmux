@@ -2035,6 +2035,20 @@
         "ja": {"stringUnit": {"state": "translated", "value": "%@でワークスペースを作成できませんでした。%@"}}
       }
     },
+    "cloudWorkspace.creation.failed.generic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "cmux couldn’t reach the machine. Check that it is running and try again."}},
+        "de": {"stringUnit": {"state": "translated", "value": "cmux konnte die Maschine nicht erreichen. Prüfe, ob sie läuft, und versuche es erneut."}},
+        "fr": {"stringUnit": {"state": "translated", "value": "cmux n’a pas pu joindre la machine. Vérifiez qu’elle est en cours d’exécution, puis réessayez."}},
+        "ar": {"stringUnit": {"state": "translated", "value": "تعذّر على cmux الوصول إلى الجهاز. تأكّد من أنه يعمل ثم حاول مرة أخرى."}},
+        "es": {"stringUnit": {"state": "translated", "value": "cmux no pudo conectarse a la máquina. Comprueba que esté en ejecución e inténtalo de nuevo."}},
+        "zh-Hant": {"stringUnit": {"state": "translated", "value": "cmux 無法連線到此機器。請確認它正在執行，然後再試一次。"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "cmux 无法连接到该机器。请确认它正在运行，然后重试。"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "cmux가 머신에 연결할 수 없습니다. 머신이 실행 중인지 확인한 뒤 다시 시도하세요."}},
+        "ja": {"stringUnit": {"state": "translated", "value": "cmux はマシンに接続できませんでした。マシンが実行中か確認してから、もう一度お試しください。"}}
+      }
+    },
     "cloudWorkspace.creation.failed.unavailable": {
       "extractionState": "manual",
       "localizations": {
@@ -2047,6 +2061,20 @@
         "zh-Hans": {"stringUnit": {"state": "translated", "value": "所选 Cloud 机器不可用。"}},
         "ko": {"stringUnit": {"state": "translated", "value": "선택한 Cloud 머신을 사용할 수 없습니다."}},
         "ja": {"stringUnit": {"state": "translated", "value": "選択したCloudマシンは利用できません。"}}
+      }
+    },
+    "cloudWorkspace.creation.failed.windowClosed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "The window that started the request has closed."}},
+        "de": {"stringUnit": {"state": "translated", "value": "Das Fenster, das die Anfrage gestartet hat, wurde geschlossen."}},
+        "fr": {"stringUnit": {"state": "translated", "value": "La fenêtre qui a lancé la demande a été fermée."}},
+        "ar": {"stringUnit": {"state": "translated", "value": "تم إغلاق النافذة التي بدأت الطلب."}},
+        "es": {"stringUnit": {"state": "translated", "value": "La ventana que inició la solicitud se ha cerrado."}},
+        "zh-Hant": {"stringUnit": {"state": "translated", "value": "發起此請求的視窗已關閉。"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "发起此请求的窗口已关闭。"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "요청을 시작한 창이 닫혔습니다."}},
+        "ja": {"stringUnit": {"state": "translated", "value": "リクエストを開始したウインドウは閉じられました。"}}
       }
     },
     "cloudTree.menu.pin": {
