@@ -37,4 +37,22 @@ struct CloudWorkspaceMachineContextTests {
         )
         #expect(context.target == .cloud("machine-b"))
     }
+
+    @Test func blankCloudSelectionFailsClosedWhileMachinesPanelHasFocus() {
+        let context = CloudWorkspaceMachineContext(
+            selection: .cloud("  "),
+            selectedWorkspaceCloudMachineID: "machine-b",
+            machinesPanelOwnsFocus: true
+        )
+        #expect(context.target == .unavailable)
+    }
+
+    @Test func blankCloudSelectionIsIgnoredWhenSidebarIsNotFocused() {
+        let context = CloudWorkspaceMachineContext(
+            selection: .cloud(""),
+            selectedWorkspaceCloudMachineID: nil,
+            machinesPanelOwnsFocus: false
+        )
+        #expect(context.target == .local)
+    }
 }
