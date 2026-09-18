@@ -291,15 +291,14 @@ struct cmuxApp: App {
         // callbacks (e.g. `.onAppear`) are delayed or skipped.
         StartupBreadcrumbLog.append("app.init.delegate.configure.begin")
         let cloudWorkspaceCoordinator = Self.makeCloudWorkspaceCoordinator(auth: authComposition)
-        let cloudWorkspaceOperationController = CloudWorkspaceOperationController(
-            isAvailable: { cloudWorkspaceCoordinator.isAvailable }
-        )
+        let cloudWorkspaceOperationController = CloudWorkspaceOperationController(isAvailable: { cloudWorkspaceCoordinator.isAvailable })
         appDelegate.configure(
             tabManager: tabManager,
             notificationStore: notificationStore,
             sidebarState: sidebarState,
             settingsRuntime: settingsRuntime,
             auth: authComposition,
+            cloudMachinePinStore: Self.makeCloudMachinePinStore(auth: authComposition),
             cloudWorkspaceCoordinator: cloudWorkspaceCoordinator,
             cloudWorkspaceOperationController: cloudWorkspaceOperationController,
             newMachineSheetPresenter: NewMachineSheetPresenter.shared,

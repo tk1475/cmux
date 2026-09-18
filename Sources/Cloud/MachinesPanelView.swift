@@ -24,10 +24,10 @@ struct MachinesPanelView: View {
     @State private var bannerDismissals = CloudBannerDismissalStore(defaults: .standard)
     let chromeBackgroundColor: NSColor
     var tabManager: TabManager? = nil
-    init(chromeBackgroundColor: NSColor, tabManager: TabManager? = nil) {
+    init(chromeBackgroundColor: NSColor, machinePinStore: CloudMachinePinStore? = nil, tabManager: TabManager? = nil) {
         self.chromeBackgroundColor = chromeBackgroundColor
         self.tabManager = tabManager
-        _viewModel = StateObject(wrappedValue: MachinesPanelViewModel(machinePinStore: AppDelegate.shared?.cloudMachinePinStore))
+        _viewModel = StateObject(wrappedValue: MachinesPanelViewModel(machinePinStore: machinePinStore))
     }
     private var accountFlow: HostAccountFlow? {
         AppDelegate.shared?.auth?.accountFlow
@@ -440,7 +440,8 @@ struct MachinesPanelView: View {
             onWillMutate: { [weak viewModel] label in viewModel?.beginOperation(label) },
             onDidMutate: { [weak viewModel] in viewModel?.endOperation() },
             onFailure: { [weak viewModel] description in viewModel?.noteTreeFailure(description) },
-            refresh: { [weak viewModel] in viewModel?.refresh(tree: true) }, refreshMachine: { [weak viewModel] in viewModel?.refreshMachine($0) }
+            refresh: { [weak viewModel] in viewModel?.refresh(tree: true) }, refreshMachine: { [weak viewModel] in viewModel?.refreshMachine($0) },
+            preferredTabManager: tabManager
         )
         return CloudTreeOutlineView(
             machines: viewModel.sidebarMachines,

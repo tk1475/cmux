@@ -517,6 +517,7 @@ struct RightSidebarPanelView: View {
             case .machines:
                 MachinesPanelView(
                     chromeBackgroundColor: windowAppearance.resolvedChromeBackgroundColor,
+                    machinePinStore: AppDelegate.shared?.cloudMachinePinStore,
                     tabManager: tabManager
                 )
             case .customSidebar:

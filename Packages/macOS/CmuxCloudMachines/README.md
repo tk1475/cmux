@@ -25,3 +25,15 @@ let resources = CloudMachineResourcePresentation(
 )
 // resources.memory.percent == 50
 ```
+
+`CloudMachinePinStore` owns explicit machine pins and the stable machine order per
+account/team scope. There is no default or primary machine: pins are the only priority
+mechanism, and the retired `cloud.defaultMachineID` preference is removed on load.
+Tests inject a scoped `UserDefaults` and the scope under test:
+
+```swift
+let store = CloudMachinePinStore(defaults: defaults, scopeProvider: { "user:a|team:one" })
+store.reconcile(machineIDs: ["b", "a"])
+store.setPinned(true, machineID: "a")
+store.orderedMachineIDs(["b", "a"]) // ["a", "b"]
+```

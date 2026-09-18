@@ -833,11 +833,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     // machine lives in `FocusedNotificationMarker` (behind `FocusedNotificationResolving`).
     /// The auth graph, injected once via `configure(...)` at app startup.
     private(set) var auth: MacAuthComposition?
-    lazy var cloudMachinePinStore = CloudMachinePinStore(defaults: .standard, scopeProvider: { [weak self] in
-        guard let flow = self?.auth?.accountFlow,
-              let userID = flow.currentIdentity?.id, !userID.isEmpty else { return nil }
-        return "user:\(userID)|team:\(flow.selectedTeamID ?? "personal")"
-    })
+    /// Explicit Cloud machine pins and stable fleet order, built by the composition root.
+    private(set) var cloudMachinePinStore: CloudMachinePinStore?
     var cloudWorkspaceCoordinator: CloudWorkspaceCoordinator?
     var cloudWorkspaceOperationController: CloudWorkspaceOperationController?
     var newMachineSheetPresenter: (any NewMachineSheetPresenting)?
@@ -2520,6 +2517,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         sidebarState: SidebarState,
         settingsRuntime: SettingsRuntime,
         auth: MacAuthComposition,
+        cloudMachinePinStore: CloudMachinePinStore,
         cloudWorkspaceCoordinator: CloudWorkspaceCoordinator,
         cloudWorkspaceOperationController: CloudWorkspaceOperationController,
         newMachineSheetPresenter: any NewMachineSheetPresenting,
@@ -2542,6 +2540,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         self.notificationStore = notificationStore
         self.sidebarState = sidebarState
         self.auth = auth
+        self.cloudMachinePinStore = cloudMachinePinStore
         self.cloudWorkspaceCoordinator = cloudWorkspaceCoordinator
         self.cloudWorkspaceOperationController = cloudWorkspaceOperationController
         self.newMachineSheetPresenter = newMachineSheetPresenter
@@ -8404,14 +8403,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     }
 
     @discardableResult
-    func performNewWorkspaceAction(
-        tabManager preferredTabManager: TabManager? = nil,
-        event: NSEvent? = nil,
-        debugSource: String = "newWorkspace"
-    ) -> Bool {
-        return performNewWorkspaceSelectionAwareAction(
-            tabManager: preferredTabManager, event: event, debugSource: debugSource
-        )
+    func performNewWorkspaceAction(tabManager preferredTabManager: TabManager? = nil, event: NSEvent? = nil, debugSource: String = "newWorkspace") -> Bool {
+        performNewWorkspaceSelectionAwareAction(tabManager: preferredTabManager, event: event, debugSource: debugSource)
     }
 
     /// Creates a new workspace whose initial surface is a browser pane in its
